@@ -1,5 +1,6 @@
 package com.atguigu.cloud.config;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -35,7 +36,12 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class ApplicationConfig {
 
+    /**
+     * 赋予负载均衡能力,才能根据微服务名称调用远程服务
+     * @return
+     */
     @Bean
+    @LoadBalanced
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }

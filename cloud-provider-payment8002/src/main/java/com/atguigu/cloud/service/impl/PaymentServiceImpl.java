@@ -1,9 +1,11 @@
-package com.atguigu.cloud.entities;
+package com.atguigu.cloud.service.impl;
 
+import com.atguigu.cloud.dao.PaymentMapper;
+import com.atguigu.cloud.entities.Payment;
+import com.atguigu.cloud.service.PaymentService;
+import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.annotation.Resource;
 
 /*
  *-----------------神兽保佑 -----------------
@@ -30,28 +32,22 @@ import lombok.NoArgsConstructor;
  *
  * ------------------代码无BUG!--------------
  * @Author: Seesky
- * @Date: 2020/3/7 18:56
+ * @Date: 2020/3/7 18:51
  * @Description:
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CommonResult<T>  {
-    private Integer code;
-    private String message;
-    private T data;
+@Service
+public class PaymentServiceImpl implements PaymentService {
 
-    public CommonResult(Integer code, String message) {
-        this(code, message, null);
+    @Resource
+    private PaymentMapper paymentMapper;
+
+    @Override
+    public int create(Payment payment) {
+        return paymentMapper.create(payment);
     }
 
-    public static<T> CommonResult<T> buildSuccess(T t){
-
-        return new CommonResult<T>(200,"成功" , t);
-    }
-
-    public static<T> CommonResult<T> buildFail(T t){
-
-        return new CommonResult<T>(500,"失败" , t);
+    @Override
+    public Payment getPaymentById(Long id) {
+        return paymentMapper.getPaymentById(id);
     }
 }

@@ -1,9 +1,7 @@
-package com.atguigu.cloud.entities;
+package com.atguigu.cloud.service;
 
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.atguigu.cloud.entities.Payment;
+import org.apache.ibatis.annotations.Param;
 
 /*
  *-----------------神兽保佑 -----------------
@@ -30,28 +28,12 @@ import lombok.NoArgsConstructor;
  *
  * ------------------代码无BUG!--------------
  * @Author: Seesky
- * @Date: 2020/3/7 18:56
+ * @Date: 2020/3/7 18:51
  * @Description:
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CommonResult<T>  {
-    private Integer code;
-    private String message;
-    private T data;
+public interface PaymentService {
 
-    public CommonResult(Integer code, String message) {
-        this(code, message, null);
-    }
+    int create(Payment payment);
 
-    public static<T> CommonResult<T> buildSuccess(T t){
-
-        return new CommonResult<T>(200,"成功" , t);
-    }
-
-    public static<T> CommonResult<T> buildFail(T t){
-
-        return new CommonResult<T>(500,"失败" , t);
-    }
+    Payment getPaymentById(@Param("id") Long id);
 }
