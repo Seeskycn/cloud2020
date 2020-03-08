@@ -6,7 +6,13 @@ import com.atguigu.cloud.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
  *-----------------神兽保佑 -----------------
@@ -46,6 +52,9 @@ public class PaymentController {
     @Value("${server.port}")
     private Integer serverPort;
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
     @PostMapping(value = "/payment/create")
     public CommonResult create(@RequestBody Payment payment) {
         int result = paymentService.create(payment);
@@ -66,6 +75,16 @@ public class PaymentController {
         } else {
             return new CommonResult(444, "没有对应记录，查询id:" + id, null);
         }
+    }
+
+    @GetMapping(value = "payment/discovery")
+    public Object discovery(){
+        Map<String,Object> map = new HashMap<>();
+        List<String> services = discoveryClient.getServices();
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PROVIDER-PAYMENT");
+        map.put("service", services);
+        map.put("instances",instances);
+        return map;
     }
 
 }
