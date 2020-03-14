@@ -1,8 +1,11 @@
 package com.atguigu.cloud.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.atguigu.cloud.entities.CommonResult;
 import com.atguigu.cloud.entities.Payment;
 import com.atguigu.cloud.service.PaymentService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,6 +73,38 @@ public class PaymentController {
         String result = paymentService.timeout(id);
 
         return new CommonResult(200, "查询成功,serverPort: " + serverPort, result);
+
+    }
+
+    /**
+     * {@link com.netflix.hystrix.HystrixCommandProperties label}
+     */
+    @GetMapping(value = "/payment/CircuitBreaker/{id}")
+    @HystrixCommand(fallbackMethod = "CircuitBreakerFallBack",commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.enabled",value = "true"), //是否开启断路器
+            @HystrixProperty(name="circuitBreaker.requestVolumeThreshold" ,value = "10"), //请求次数
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds" ,value="10000"), //时间窗口期
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage" ,value="60")//失败率
+    })
+    public CommonResult CircuitBreaker(@PathVariable("id") Long id) {
+        if(id <= 0 ){
+            throw new RuntimeException(" id 不能为负数");
+        }
+        String uuid = IdUtil.simpleUUID();
+        return new CommonResult(200, "查询成功,serverPort: " + serverPort + "uuid : ", uuid);
+
+    }
+
+    /**
+     * 非默认降级返回值必须一致
+     * Fallback method 'public java.lang.String com.atguigu.cloud.controller.PaymentController.CircuitBreakerFallBack(java.lang.Long)'
+     * must return: class com.atguigu.cloud.entities.CommonResult or its subclass
+     * @param id
+     * @return
+     */
+    public CommonResult CircuitBreakerFallBack(@PathVariable("id") Long id) {
+
+        return new CommonResult(200, "fail","CircuitBreakerFallBack");
 
     }
 
