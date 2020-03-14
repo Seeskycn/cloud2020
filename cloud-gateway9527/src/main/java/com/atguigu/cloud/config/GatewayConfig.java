@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
  * @Date: 2020/3/14 17:22
  * @Description:
  */
-@Configuration
+//@Configuration
 public class GatewayConfig {
 
     @Bean
