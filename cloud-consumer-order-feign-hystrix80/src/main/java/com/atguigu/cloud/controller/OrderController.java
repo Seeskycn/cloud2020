@@ -53,7 +53,7 @@ public class OrderController {
    /* @HystrixCommand(fallbackMethod = "timeoutFallBack" ,commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds" ,value="1500")
     })*/
-   @HystrixCommand
+   //@HystrixCommand
     public CommonResult timeout(@PathVariable("id") Long id) throws InterruptedException {
         return paymentService.timeout(id);
     }

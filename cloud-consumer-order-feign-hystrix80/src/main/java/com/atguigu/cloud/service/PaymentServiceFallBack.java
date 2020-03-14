@@ -1,13 +1,5 @@
 package com.atguigu.cloud.service;
 
-import com.atguigu.cloud.entities.CommonResult;
-import com.atguigu.cloud.entities.Payment;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 /*
  *-----------------神兽保佑 -----------------
  *           ┌─┐        ┌─┐
@@ -33,15 +25,24 @@ import org.springframework.web.bind.annotation.RequestBody;
  *
  * ------------------代码无BUG!--------------
  * @Author: Seesky
- * @Date: 2020/3/12 20:46
+ * @Date: 2020/3/14 13:02
  * @Description:
  */
-@FeignClient(value = "CLOUD-PROVIDER-PAYMENT-HYSTRIX",fallback = PaymentServiceFallBack.class)
-public interface PaymentService {
 
-    @GetMapping(value = "/payment/info/{id}")
-    public CommonResult getPaymentById(@PathVariable("id") Long id) ;
+import com.atguigu.cloud.entities.CommonResult;
+import org.springframework.stereotype.Service;
 
-    @GetMapping(value = "/payment/timeout/{id}")
-    public CommonResult timeout(@PathVariable("id") Long id) ;
+@Service
+public class PaymentServiceFallBack implements PaymentService {
+
+    @Override
+    public CommonResult getPaymentById(Long id) {
+        return null;
+    }
+
+    @Override
+    public CommonResult timeout(Long id) {
+
+        return new CommonResult(200, "success","PaymentServiceFallBack service Fallback");
+    }
 }
