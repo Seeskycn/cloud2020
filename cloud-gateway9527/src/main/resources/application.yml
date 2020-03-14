@@ -1,0 +1,31 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: payment_routh # 路由的ID,没有固定值,但要求唯一
+          uri: http://localhost:8001 # 匹配后提供服务的路由地址
+          predicates: # 断言,路径相匹后提供路由地址
+           - Path=/payment/*
+
+
+eureka:
+  client:
+    # false 表示不想注册中心注册自己
+    register-with-eureka: true
+    #false 表示自己就是注册中心,我的职责就是维护服务实例,并不需要去检索服务
+    fetch-registry: true
+    service-url:
+      #设置与Eureka Server交互的地址查询服务和注册服务需要依赖这个地址
+      #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    # 配置微服务展示的名字
+    instance-id: cloud-gateway
+    # 配置显示ip
+    prefer-ip-address: true
+
