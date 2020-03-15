@@ -1,0 +1,38 @@
+server:
+  port: 3344
+spring:
+  application:
+    name: cloud-config-server
+  cloud:
+    config:
+     server:
+       git:
+         uri: https://github.com/Seeskycn/cloud2020config
+         search-paths:
+           - cloud2020config
+         username: username
+         password: password
+     label: master
+
+eureka:
+  client:
+    # false 表示不想注册中心注册自己
+    register-with-eureka: true
+    #false 表示自己就是注册中心,我的职责就是维护服务实例,并不需要去检索服务
+    fetch-registry: true
+    service-url:
+      #设置与Eureka Server交互的地址查询服务和注册服务需要依赖这个地址
+      defaultZone: http://eureka7001.com:7001/eureka/
+
+rabbitmq:
+  host: localhost:5672
+  port: 5672
+  username: guest
+  password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh"
+

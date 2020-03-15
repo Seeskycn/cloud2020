@@ -24,6 +24,9 @@
         <module>cloud-provider-payment-hystrix8006</module>
         <module>cloud-dashboard-hystrix6666</module>
         <module>cloud-gateway9527</module>
+        <module>cloud-config-server3344</module>
+        <module>cloud-config-client3355</module>
+        <module>cloud-config-client3366</module>
     </modules>
     <packaging>pom</packaging>
 
